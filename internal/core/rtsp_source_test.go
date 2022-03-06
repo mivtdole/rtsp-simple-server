@@ -216,7 +216,7 @@ func TestRTSPSourceNoPassword(t *testing.T) {
 	<-done
 }
 
-func TestRTSPSourceMissingH264Params(t *testing.T) {
+func TestRTSPSourceDynamicH264Params(t *testing.T) {
 	track, err := gortsplib.NewTrackH264(96, nil, nil, nil)
 	require.NoError(t, err)
 
@@ -235,34 +235,6 @@ func TestRTSPSourceMissingH264Params(t *testing.T) {
 				}, stream, nil
 			},
 			onPlay: func(ctx *gortsplib.ServerHandlerOnPlayCtx) (*base.Response, error) {
-				go func() {
-					time.Sleep(500 * time.Millisecond)
-
-					enc := rtph264.NewEncoder(96, nil, nil, nil)
-
-					pkts, err := enc.Encode([][]byte{{5}}, 0) // IDR
-					require.NoError(t, err)
-					stream.WritePacketRTP(0, pkts[0])
-
-					pkts, err = enc.Encode([][]byte{{7, 1, 2, 3}}, 0) // SPS
-					require.NoError(t, err)
-					stream.WritePacketRTP(0, pkts[0])
-
-					pkts, err = enc.Encode([][]byte{{8}}, 0) // PPS
-					require.NoError(t, err)
-					stream.WritePacketRTP(0, pkts[0])
-
-					pkts, err = enc.Encode([][]byte{{5, 1}}, 0) // IDR
-					require.NoError(t, err)
-					stream.WritePacketRTP(0, pkts[0])
-
-					time.Sleep(500 * time.Millisecond)
-
-					pkts, err = enc.Encode([][]byte{{5, 2}}, 0) // IDR
-					require.NoError(t, err)
-					stream.WritePacketRTP(0, pkts[0])
-				}()
-
 				return &base.Response{
 					StatusCode: base.StatusOK,
 				}, nil
@@ -279,34 +251,65 @@ func TestRTSPSourceMissingH264Params(t *testing.T) {
 		"hlsDisable: yes\n" +
 		"paths:\n" +
 		"  proxied:\n" +
-		"    source: rtsp://127.0.0.1:8555/teststream\n" +
-		"    sourceOnDemand: yes\n")
+		"    source: rtsp://127.0.0.1:8555/teststream\n")
 	require.Equal(t, true, ok)
 	defer p.close()
 
-	received := make(chan struct{})
-	decoder := rtph264.NewDecoder()
+	time.Sleep(1 * time.Second)
 
-	c := gortsplib.Client{
-		OnPacketRTP: func(trackID int, pkt *rtp.Packet) {
-			nalus, _, err := decoder.Decode(pkt)
-			if err != nil {
-				return
-			}
+	enc := rtph264.NewEncoder(96, nil, nil, nil)
 
-			require.Equal(t, [][]byte{{0x05, 0x02}}, nalus)
-			close(received)
-		},
-	}
-
-	err = c.StartReading("rtsp://127.0.0.1:8554/proxied")
+	pkts, err := enc.Encode([][]byte{{7, 1, 2, 3}}, 0) // SPS
 	require.NoError(t, err)
-	defer c.Close()
+	stream.WritePacketRTP(0, pkts[0])
 
-	h264Track, ok := c.Tracks()[0].(*gortsplib.TrackH264)
-	require.Equal(t, true, ok)
-	require.Equal(t, []byte{7, 1, 2, 3}, h264Track.SPS())
-	require.Equal(t, []byte{8}, h264Track.PPS())
+	pkts, err = enc.Encode([][]byte{{8}}, 0) // PPS
+	require.NoError(t, err)
+	stream.WritePacketRTP(0, pkts[0])
 
-	<-received
+	func() {
+		c := gortsplib.Client{}
+
+		u, err := base.ParseURL("rtsp://127.0.0.1:8554/proxied")
+		require.NoError(t, err)
+
+		err = c.Start(u.Scheme, u.Host)
+		require.NoError(t, err)
+		defer c.Close()
+
+		tracks, _, _, err := c.Describe(u)
+		require.NoError(t, err)
+
+		h264Track, ok := tracks[0].(*gortsplib.TrackH264)
+		require.Equal(t, true, ok)
+		require.Equal(t, []byte{7, 1, 2, 3}, h264Track.SPS())
+		require.Equal(t, []byte{8}, h264Track.PPS())
+	}()
+
+	pkts, err = enc.Encode([][]byte{{7, 4, 5, 6}}, 0) // SPS
+	require.NoError(t, err)
+	stream.WritePacketRTP(0, pkts[0])
+
+	pkts, err = enc.Encode([][]byte{{8, 1}}, 0) // PPS
+	require.NoError(t, err)
+	stream.WritePacketRTP(0, pkts[0])
+
+	func() {
+		c := gortsplib.Client{}
+
+		u, err := base.ParseURL("rtsp://127.0.0.1:8554/proxied")
+		require.NoError(t, err)
+
+		err = c.Start(u.Scheme, u.Host)
+		require.NoError(t, err)
+		defer c.Close()
+
+		tracks, _, _, err := c.Describe(u)
+		require.NoError(t, err)
+
+		h264Track, ok := tracks[0].(*gortsplib.TrackH264)
+		require.Equal(t, true, ok)
+		require.Equal(t, []byte{7, 4, 5, 6}, h264Track.SPS())
+		require.Equal(t, []byte{8, 1}, h264Track.PPS())
+	}()
 }
