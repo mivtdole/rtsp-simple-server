@@ -1,7 +1,6 @@
 package hls
 
 import (
-	"fmt"
 	"io"
 	"time"
 
@@ -22,12 +21,6 @@ func NewMuxer(
 	hlsSegmentMaxSize uint64,
 	videoTrack *gortsplib.TrackH264,
 	audioTrack *gortsplib.TrackAAC) (*Muxer, error) {
-	if videoTrack != nil {
-		if videoTrack.SPS() == nil || videoTrack.PPS() == nil {
-			return nil, fmt.Errorf("invalid H264 track: SPS or PPS not provided into the SDP")
-		}
-	}
-
 	primaryPlaylist := newMuxerPrimaryPlaylist(videoTrack, audioTrack)
 
 	streamPlaylist := newMuxerStreamPlaylist(hlsSegmentCount)
