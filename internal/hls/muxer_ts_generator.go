@@ -52,32 +52,15 @@ func newMuxerTSGenerator(
 }
 
 func (m *muxerTSGenerator) writeH264(pts time.Duration, nalus [][]byte) error {
-	idrPresent := false
-
-	// prepend an AUD. This is required by video.js and iOS
-	filteredNALUs := [][]byte{
-		{byte(h264.NALUTypeAccessUnitDelimiter), 240},
-	}
-
-	for _, nalu := range nalus {
-		typ := h264.NALUType(nalu[0] & 0x1F)
-		switch typ {
-		case h264.NALUTypeSPS, h264.NALUTypePPS:
-			// added automatically before every IDR
-			continue
-
-		case h264.NALUTypeAccessUnitDelimiter:
-			// added automatically
-			continue
-
-		case h264.NALUTypeIDR:
-			idrPresent = true
-			// add SPS and PPS before every IDR
-			filteredNALUs = append(filteredNALUs, m.videoTrack.SPS(), m.videoTrack.PPS())
+	idrPresent := func() bool {
+		for _, nalu := range nalus {
+			typ := h264.NALUType(nalu[0] & 0x1F)
+			if typ == h264.NALUTypeIDR {
+				return true
+			}
 		}
-
-		filteredNALUs = append(filteredNALUs, nalu)
-	}
+		return false
+	}()
 
 	if m.currentSegment == nil {
 		// skip groups silently until we find one with a IDR
@@ -104,9 +87,12 @@ func (m *muxerTSGenerator) writeH264(pts time.Duration, nalus [][]byte) error {
 		}
 	}
 
+	// prepend an AUD. This is required by video.js and iOS
+	nalus = append([][]byte{{byte(h264.NALUTypeAccessUnitDelimiter), 240}}, nalus...)
+
 	dts := m.videoDTSEst.Feed(pts-m.startPTS) + pcrOffset
 
-	enc, err := h264.EncodeAnnexB(filteredNALUs)
+	enc, err := h264.EncodeAnnexB(nalus)
 	if err != nil {
 		if m.currentSegment.buf.Len() > 0 {
 			m.streamPlaylist.pushSegment(m.currentSegment)

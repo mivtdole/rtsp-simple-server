@@ -341,34 +341,17 @@ func (c *rtmpConn) runRead(ctx context.Context) error {
 				continue
 			}
 
-			var filteredNALUs [][]byte
-			idrPresent := false
+			// TODO: send H264DecoderConfig instead of NALUs?
 
-			for _, nalu := range pair.data.nalus {
-				typ := h264.NALUType(nalu[0] & 0x1F)
-
-				switch typ {
-				case h264.NALUTypeSPS, h264.NALUTypePPS:
-					// added automatically before every IDR
-					continue
-
-				case h264.NALUTypeAccessUnitDelimiter:
-					// not needed
-					continue
-
-				case h264.NALUTypeIDR:
-					idrPresent = true
-					// add SPS and PPS before every IDR
-					// TODO: send H264DecoderConfig instead of NALUs?
-					filteredNALUs = append(filteredNALUs, videoTrack.SPS(), videoTrack.PPS())
+			idrPresent := func() bool {
+				for _, nalu := range pair.data.nalus {
+					typ := h264.NALUType(nalu[0] & 0x1F)
+					if typ == h264.NALUTypeIDR {
+						return true
+					}
 				}
-
-				filteredNALUs = append(filteredNALUs, nalu)
-			}
-
-			if filteredNALUs == nil {
-				continue
-			}
+				return false
+			}()
 
 			// wait until we receive an IDR
 			if !videoFirstIDRFound {
@@ -381,7 +364,7 @@ func (c *rtmpConn) runRead(ctx context.Context) error {
 				videoDTSEst = h264.NewDTSEstimator()
 			}
 
-			data, err := h264.EncodeAVCC(filteredNALUs)
+			data, err := h264.EncodeAVCC(pair.data.nalus)
 			if err != nil {
 				return err
 			}
