@@ -216,25 +216,25 @@ func (s *rtspSource) runInner() bool {
 				if ok {
 					nalus, pts, err := h264Decoders[trackID].DecodeUntilMarker(pkt)
 					if err == nil {
-						res.stream.onPacketRTP(trackID, &data{
+						res.stream.writeData(trackID, &data{
 							rtp:   pkt,
 							nalus: append([][]byte(nil), nalus...),
 							pts:   pts,
 						})
 					} else {
-						res.stream.onPacketRTP(trackID, &data{
+						res.stream.writeData(trackID, &data{
 							rtp: pkt,
 						})
 					}
 				} else {
-					res.stream.onPacketRTP(trackID, &data{
+					res.stream.writeData(trackID, &data{
 						rtp: pkt,
 					})
 				}
 			}
 
 			c.OnPacketRTCP = func(trackID int, pkt rtcp.Packet) {
-				res.stream.onPacketRTCP(trackID, pkt)
+				res.stream.writePacketRTCP(trackID, pkt)
 			}
 
 			_, err = c.Play(nil)

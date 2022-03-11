@@ -43,7 +43,7 @@ func (m *streamNonRTSPReadersMap) forwardPacketRTP(trackID int, data *data) {
 	defer m.mutex.RUnlock()
 
 	for c := range m.ma {
-		c.onReaderPacketRTP(trackID, data)
+		c.onReaderData(trackID, data)
 	}
 }
 
@@ -136,7 +136,7 @@ func (s *stream) remuxH264NALUs(h264track *gortsplib.TrackH264, data *data) {
 	data.nalus = filteredNALUs
 }
 
-func (s *stream) onPacketRTP(trackID int, data *data) {
+func (s *stream) writeData(trackID int, data *data) {
 	track := s.rtspStream.Tracks()[trackID]
 	if h264track, ok := track.(*gortsplib.TrackH264); ok {
 		s.updateH264TrackParameters(h264track, data.nalus)
@@ -150,7 +150,7 @@ func (s *stream) onPacketRTP(trackID int, data *data) {
 	s.nonRTSPReaders.forwardPacketRTP(trackID, data)
 }
 
-func (s *stream) onPacketRTCP(trackID int, pkt rtcp.Packet) {
+func (s *stream) writePacketRTCP(trackID int, pkt rtcp.Packet) {
 	// forward to RTSP readers
 	s.rtspStream.WritePacketRTCP(trackID, pkt)
 

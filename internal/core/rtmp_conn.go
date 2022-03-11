@@ -485,7 +485,7 @@ func (c *rtmpConn) runPublish(ctx context.Context) error {
 		return rres.err
 	}
 
-	rtcpSenders := rtcpsenderset.New(tracks, rres.stream.onPacketRTCP)
+	rtcpSenders := rtcpsenderset.New(tracks, rres.stream.writePacketRTCP)
 	defer rtcpSenders.Close()
 
 	for {
@@ -518,11 +518,11 @@ func (c *rtmpConn) runPublish(ctx context.Context) error {
 				rtcpSenders.OnPacketRTP(videoTrackID, pkt)
 
 				if i != lastPkt {
-					rres.stream.onPacketRTP(videoTrackID, &data{
+					rres.stream.writeData(videoTrackID, &data{
 						rtp: pkt,
 					})
 				} else {
-					rres.stream.onPacketRTP(videoTrackID, &data{
+					rres.stream.writeData(videoTrackID, &data{
 						rtp:   pkt,
 						nalus: nalus,
 						pts:   pts,
@@ -568,11 +568,11 @@ func (c *rtmpConn) runPublish(ctx context.Context) error {
 				rtcpSenders.OnPacketRTP(videoTrackID, pkt)
 
 				if i != lastPkt {
-					rres.stream.onPacketRTP(videoTrackID, &data{
+					rres.stream.writeData(videoTrackID, &data{
 						rtp: pkt,
 					})
 				} else {
-					rres.stream.onPacketRTP(videoTrackID, &data{
+					rres.stream.writeData(videoTrackID, &data{
 						rtp:   pkt,
 						nalus: outNALUs,
 						pts:   pts,
@@ -592,7 +592,7 @@ func (c *rtmpConn) runPublish(ctx context.Context) error {
 
 			for _, pkt := range pkts {
 				rtcpSenders.OnPacketRTP(audioTrackID, pkt)
-				rres.stream.onPacketRTP(audioTrackID, &data{rtp: pkt})
+				rres.stream.writeData(audioTrackID, &data{rtp: pkt})
 			}
 		}
 	}
@@ -649,8 +649,8 @@ func (c *rtmpConn) onReaderAccepted() {
 	c.log(logger.Info, "is reading from path '%s'", c.path.Name())
 }
 
-// onReaderPacketRTP implements reader.
-func (c *rtmpConn) onReaderPacketRTP(trackID int, data *data) {
+// onReaderData implements reader.
+func (c *rtmpConn) onReaderData(trackID int, data *data) {
 	c.ringBuffer.Push(rtmpConnTrackIDDataPair{trackID, data})
 }
 

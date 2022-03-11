@@ -8,7 +8,7 @@ import (
 type reader interface {
 	close()
 	onReaderAccepted()
-	onReaderPacketRTP(int, *data)
+	onReaderData(int, *data)
 	onReaderPacketRTCP(int, rtcp.Packet)
 	onReaderAPIDescribe() interface{}
 }

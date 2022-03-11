@@ -351,8 +351,8 @@ func (s *rtspSession) onReaderAccepted() {
 		s.ss.SetuppedTransport())
 }
 
-// onReaderPacketRTP implements reader.
-func (s *rtspSession) onReaderPacketRTP(trackID int, data *data) {
+// onReaderData implements reader.
+func (s *rtspSession) onReaderData(trackID int, data *data) {
 	// packets are routed to the session by gortsplib.ServerStream.
 }
 
@@ -405,8 +405,8 @@ func (s *rtspSession) onPublisherAccepted(tracksLen int) {
 		s.ss.SetuppedTransport())
 }
 
-// onPacketRTP is called by rtspServer.
-func (s *rtspSession) onPacketRTP(ctx *gortsplib.ServerHandlerOnPacketRTPCtx) {
+// onData is called by rtspServer.
+func (s *rtspSession) onData(ctx *gortsplib.ServerHandlerOnPacketRTPCtx) {
 	if s.ss.State() != gortsplib.ServerSessionStateRecord {
 		return
 	}
@@ -416,18 +416,18 @@ func (s *rtspSession) onPacketRTP(ctx *gortsplib.ServerHandlerOnPacketRTPCtx) {
 		nalus, pts, err := s.h264Decoders[ctx.TrackID].DecodeUntilMarker(ctx.Packet)
 
 		if err == nil {
-			s.stream.onPacketRTP(ctx.TrackID, &data{
+			s.stream.writeData(ctx.TrackID, &data{
 				rtp:   ctx.Packet,
 				nalus: append([][]byte(nil), nalus...),
 				pts:   pts,
 			})
 		} else {
-			s.stream.onPacketRTP(ctx.TrackID, &data{
+			s.stream.writeData(ctx.TrackID, &data{
 				rtp: ctx.Packet,
 			})
 		}
 	} else {
-		s.stream.onPacketRTP(ctx.TrackID, &data{
+		s.stream.writeData(ctx.TrackID, &data{
 			rtp: ctx.Packet,
 		})
 	}
@@ -439,5 +439,5 @@ func (s *rtspSession) onPacketRTCP(ctx *gortsplib.ServerHandlerOnPacketRTCPCtx) 
 		return
 	}
 
-	s.stream.onPacketRTCP(ctx.TrackID, ctx.Packet)
+	s.stream.writePacketRTCP(ctx.TrackID, ctx.Packet)
 }

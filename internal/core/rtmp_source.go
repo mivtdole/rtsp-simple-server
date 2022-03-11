@@ -161,7 +161,7 @@ func (s *rtmpSource) runInner() bool {
 						s.parent.onSourceStaticSetNotReady(pathSourceStaticSetNotReadyReq{source: s})
 					}()
 
-					rtcpSenders := rtcpsenderset.New(tracks, res.stream.onPacketRTCP)
+					rtcpSenders := rtcpsenderset.New(tracks, res.stream.writePacketRTCP)
 					defer rtcpSenders.Close()
 
 					for {
@@ -206,11 +206,11 @@ func (s *rtmpSource) runInner() bool {
 								rtcpSenders.OnPacketRTP(videoTrackID, pkt)
 
 								if i != lastPkt {
-									res.stream.onPacketRTP(videoTrackID, &data{
+									res.stream.writeData(videoTrackID, &data{
 										rtp: pkt,
 									})
 								} else {
-									res.stream.onPacketRTP(videoTrackID, &data{
+									res.stream.writeData(videoTrackID, &data{
 										rtp:   pkt,
 										nalus: outNALUs,
 										pts:   pts,
@@ -230,7 +230,7 @@ func (s *rtmpSource) runInner() bool {
 
 							for _, pkt := range pkts {
 								rtcpSenders.OnPacketRTP(audioTrackID, pkt)
-								res.stream.onPacketRTP(audioTrackID, &data{rtp: pkt})
+								res.stream.writeData(audioTrackID, &data{rtp: pkt})
 							}
 						}
 					}

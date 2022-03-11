@@ -525,8 +525,8 @@ func (m *hlsMuxer) onReaderAccepted() {
 	m.log(logger.Info, "is converting into HLS")
 }
 
-// onReaderPacketRTP implements reader.
-func (m *hlsMuxer) onReaderPacketRTP(trackID int, data *data) {
+// onReaderData implements reader.
+func (m *hlsMuxer) onReaderData(trackID int, data *data) {
 	m.ringBuffer.Push(hlsMuxerTrackIDDataPair{trackID, data})
 }
 
