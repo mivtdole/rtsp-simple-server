@@ -7,8 +7,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/aler9/gortsplib"
 	"github.com/asticode/go-astits"
+	"github.com/mivtdole/gortsplib"
 )
 
 const (

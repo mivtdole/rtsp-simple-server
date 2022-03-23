@@ -27,10 +27,10 @@ Features:
 * Reload the configuration without disconnecting existing clients (hot reloading)
 * Compatible with Linux, Windows and macOS, does not require any dependency or interpreter, it's a single executable
 
-[![Test](https://github.com/aler9/rtsp-simple-server/workflows/test/badge.svg)](https://github.com/aler9/rtsp-simple-server/actions?query=workflow:test)
-[![Lint](https://github.com/aler9/rtsp-simple-server/workflows/lint/badge.svg)](https://github.com/aler9/rtsp-simple-server/actions?query=workflow:lint)
+[![Test](https://github.com/mivtdole/rtsp-simple-server/workflows/test/badge.svg)](https://github.com/mivtdole/rtsp-simple-server/actions?query=workflow:test)
+[![Lint](https://github.com/mivtdole/rtsp-simple-server/workflows/lint/badge.svg)](https://github.com/mivtdole/rtsp-simple-server/actions?query=workflow:lint)
 [![CodeCov](https://codecov.io/gh/aler9/rtsp-simple-server/branch/main/graph/badge.svg)](https://codecov.io/gh/aler9/rtsp-simple-server/branch/main)
-[![Release](https://img.shields.io/github/v/release/aler9/rtsp-simple-server)](https://github.com/aler9/rtsp-simple-server/releases)
+[![Release](https://img.shields.io/github/v/release/aler9/rtsp-simple-server)](https://github.com/mivtdole/rtsp-simple-server/releases)
 [![Docker Hub](https://img.shields.io/badge/docker-aler9/rtsp--simple--server-blue)](https://hub.docker.com/r/aler9/rtsp-simple-server)
 [![API Documentation](https://img.shields.io/badge/api-documentation-blue)](https://aler9.github.io/rtsp-simple-server)
 
@@ -79,7 +79,7 @@ Features:
 
 ### Standard
 
-1. Download and extract a precompiled binary from the [release page](https://github.com/aler9/rtsp-simple-server/releases).
+1. Download and extract a precompiled binary from the [release page](https://github.com/mivtdole/rtsp-simple-server/releases).
 
 2. Start the server:
 
@@ -101,7 +101,7 @@ The `--network=host` flag is mandatory since Docker can change the source port o
 docker run --rm -it -e RTSP_PROTOCOLS=tcp -p 8554:8554 -p 1935:1935 -p 8888:8888 aler9/rtsp-simple-server
 ```
 
-Please keep in mind that the Docker image doesn't include _FFmpeg_. if you need to use _FFmpeg_ for an external command or anything else, you need to build a Docker image that contains both _rtsp-simple-server_ and _FFmpeg_, by following instructions [here](https://github.com/aler9/rtsp-simple-server/discussions/278#discussioncomment-549104).
+Please keep in mind that the Docker image doesn't include _FFmpeg_. if you need to use _FFmpeg_ for an external command or anything else, you need to build a Docker image that contains both _rtsp-simple-server_ and _FFmpeg_, by following instructions [here](https://github.com/mivtdole/rtsp-simple-server/discussions/278#discussioncomment-549104).
 
 ## Basic usage
 
@@ -341,7 +341,7 @@ The command inserted into `runOnDemand` will start only when a client requests t
 
 Systemd is the service manager used by Ubuntu, Debian and many other Linux distributions, and allows to launch rtsp-simple-server on boot.
 
-Download a release bundle from the [release page](https://github.com/aler9/rtsp-simple-server/releases), unzip it, and move the executable and configuration in the system:
+Download a release bundle from the [release page](https://github.com/mivtdole/rtsp-simple-server/releases), unzip it, and move the executable and configuration in the system:
 
 ```
 sudo mv rtsp-simple-server /usr/local/bin/
@@ -793,7 +793,7 @@ ffmpeg -i rtsp://original-stream -pix_fmt yuv420p -c:v libx264 -preset ultrafast
 
 Related projects
 
-* https://github.com/aler9/gortsplib (RTSP library used internally)
+* https://github.com/mivtdole/gortsplib (RTSP library used internally)
 * https://github.com/pion/sdp (SDP library used internally)
 * https://github.com/pion/rtcp (RTCP library used internally)
 * https://github.com/pion/rtp (RTP library used internally)

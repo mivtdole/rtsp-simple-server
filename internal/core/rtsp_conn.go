@@ -6,14 +6,14 @@ import (
 	"net"
 	"time"
 
-	"github.com/aler9/gortsplib"
-	"github.com/aler9/gortsplib/pkg/auth"
-	"github.com/aler9/gortsplib/pkg/base"
-	"github.com/aler9/gortsplib/pkg/headers"
+	"github.com/mivtdole/gortsplib"
+	"github.com/mivtdole/gortsplib/pkg/auth"
+	"github.com/mivtdole/gortsplib/pkg/base"
+	"github.com/mivtdole/gortsplib/pkg/headers"
 
-	"github.com/aler9/rtsp-simple-server/internal/conf"
-	"github.com/aler9/rtsp-simple-server/internal/externalcmd"
-	"github.com/aler9/rtsp-simple-server/internal/logger"
+	"github.com/mivtdole/rtsp-simple-server/internal/conf"
+	"github.com/mivtdole/rtsp-simple-server/internal/externalcmd"
+	"github.com/mivtdole/rtsp-simple-server/internal/logger"
 )
 
 const (

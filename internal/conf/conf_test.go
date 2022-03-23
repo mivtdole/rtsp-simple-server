@@ -9,11 +9,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/aler9/gortsplib"
+	"github.com/mivtdole/gortsplib"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/crypto/nacl/secretbox"
 
-	"github.com/aler9/rtsp-simple-server/internal/logger"
+	"github.com/mivtdole/rtsp-simple-server/internal/logger"
 )
 
 func writeTempFile(byts []byte) (string, error) {

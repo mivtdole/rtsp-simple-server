@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/aler9/gortsplib"
+	"github.com/mivtdole/gortsplib"
 	"github.com/pion/rtp/v2"
 	"github.com/stretchr/testify/require"
 )

@@ -10,15 +10,15 @@ import (
 	"sync"
 	"time"
 
-	"github.com/aler9/gortsplib"
-	"github.com/aler9/gortsplib/pkg/base"
-	"github.com/aler9/gortsplib/pkg/h264"
-	"github.com/aler9/gortsplib/pkg/rtph264"
+	"github.com/mivtdole/gortsplib"
+	"github.com/mivtdole/gortsplib/pkg/base"
+	"github.com/mivtdole/gortsplib/pkg/h264"
+	"github.com/mivtdole/gortsplib/pkg/rtph264"
 	"github.com/pion/rtcp"
 	"github.com/pion/rtp/v2"
 
-	"github.com/aler9/rtsp-simple-server/internal/conf"
-	"github.com/aler9/rtsp-simple-server/internal/logger"
+	"github.com/mivtdole/rtsp-simple-server/internal/conf"
+	"github.com/mivtdole/rtsp-simple-server/internal/logger"
 )
 
 const (

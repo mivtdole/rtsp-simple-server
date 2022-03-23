@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/aler9/gortsplib"
+	"github.com/mivtdole/gortsplib"
 	"github.com/stretchr/testify/require"
 )
 

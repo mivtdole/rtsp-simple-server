@@ -14,11 +14,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/aler9/gortsplib"
 	"github.com/asticode/go-astits"
 	"github.com/grafov/m3u8"
+	"github.com/mivtdole/gortsplib"
 
-	"github.com/aler9/rtsp-simple-server/internal/logger"
+	"github.com/mivtdole/rtsp-simple-server/internal/logger"
 )
 
 const (

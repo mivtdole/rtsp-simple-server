@@ -10,12 +10,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/aler9/gortsplib"
-	"github.com/aler9/gortsplib/pkg/headers"
+	"github.com/mivtdole/gortsplib"
+	"github.com/mivtdole/gortsplib/pkg/headers"
 	"golang.org/x/crypto/nacl/secretbox"
 	"gopkg.in/yaml.v2"
 
-	"github.com/aler9/rtsp-simple-server/internal/logger"
+	"github.com/mivtdole/rtsp-simple-server/internal/logger"
 )
 
 func decrypt(key string, byts []byte) ([]byte, error) {

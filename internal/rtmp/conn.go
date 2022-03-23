@@ -7,8 +7,8 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/aler9/gortsplib"
-	"github.com/aler9/gortsplib/pkg/aac"
+	"github.com/mivtdole/gortsplib"
+	"github.com/mivtdole/gortsplib/pkg/aac"
 	"github.com/notedit/rtmp/av"
 	nh264 "github.com/notedit/rtmp/codec/h264"
 	"github.com/notedit/rtmp/format/flv/flvio"

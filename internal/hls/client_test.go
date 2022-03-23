@@ -12,13 +12,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/aler9/gortsplib"
-	"github.com/aler9/gortsplib/pkg/h264"
 	"github.com/asticode/go-astits"
 	"github.com/gin-gonic/gin"
+	"github.com/mivtdole/gortsplib"
+	"github.com/mivtdole/gortsplib/pkg/h264"
 	"github.com/stretchr/testify/require"
 
-	"github.com/aler9/rtsp-simple-server/internal/logger"
+	"github.com/mivtdole/rtsp-simple-server/internal/logger"
 )
 
 type testLogger struct{}

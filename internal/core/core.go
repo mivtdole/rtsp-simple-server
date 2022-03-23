@@ -7,15 +7,15 @@ import (
 	"os/signal"
 	"reflect"
 
-	"github.com/aler9/gortsplib"
 	"github.com/gin-gonic/gin"
+	"github.com/mivtdole/gortsplib"
 	"gopkg.in/alecthomas/kingpin.v2"
 
-	"github.com/aler9/rtsp-simple-server/internal/conf"
-	"github.com/aler9/rtsp-simple-server/internal/confwatcher"
-	"github.com/aler9/rtsp-simple-server/internal/externalcmd"
-	"github.com/aler9/rtsp-simple-server/internal/logger"
-	"github.com/aler9/rtsp-simple-server/internal/rlimit"
+	"github.com/mivtdole/rtsp-simple-server/internal/conf"
+	"github.com/mivtdole/rtsp-simple-server/internal/confwatcher"
+	"github.com/mivtdole/rtsp-simple-server/internal/externalcmd"
+	"github.com/mivtdole/rtsp-simple-server/internal/logger"
+	"github.com/mivtdole/rtsp-simple-server/internal/rlimit"
 )
 
 var version = "v0.0.0"

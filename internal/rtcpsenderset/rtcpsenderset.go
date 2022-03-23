@@ -3,8 +3,8 @@ package rtcpsenderset
 import (
 	"time"
 
-	"github.com/aler9/gortsplib"
-	"github.com/aler9/gortsplib/pkg/rtcpsender"
+	"github.com/mivtdole/gortsplib"
+	"github.com/mivtdole/gortsplib/pkg/rtcpsender"
 	"github.com/pion/rtcp"
 	"github.com/pion/rtp/v2"
 )

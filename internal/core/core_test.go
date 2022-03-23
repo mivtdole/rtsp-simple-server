@@ -13,9 +13,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/aler9/gortsplib"
-	"github.com/aler9/gortsplib/pkg/base"
-	"github.com/aler9/gortsplib/pkg/headers"
+	"github.com/mivtdole/gortsplib"
+	"github.com/mivtdole/gortsplib/pkg/base"
+	"github.com/mivtdole/gortsplib/pkg/headers"
 	"github.com/stretchr/testify/require"
 )
 
@@ -241,7 +241,7 @@ import (
 	"os/signal"
 	"syscall"
 	"io/ioutil"
-	"github.com/aler9/gortsplib"
+	"github.com/mivtdole/gortsplib"
 )
 
 func main() {

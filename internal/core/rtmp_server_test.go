@@ -8,7 +8,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/aler9/rtsp-simple-server/internal/rtmp"
+	"github.com/mivtdole/rtsp-simple-server/internal/rtmp"
 )
 
 func TestRTMPServerPublish(t *testing.T) {

@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/aler9/gortsplib"
+	"github.com/mivtdole/gortsplib"
 )
 
 type muxerPrimaryPlaylist struct {

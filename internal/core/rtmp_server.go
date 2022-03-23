@@ -9,9 +9,9 @@ import (
 	"strconv"
 	"sync"
 
-	"github.com/aler9/rtsp-simple-server/internal/conf"
-	"github.com/aler9/rtsp-simple-server/internal/externalcmd"
-	"github.com/aler9/rtsp-simple-server/internal/logger"
+	"github.com/mivtdole/rtsp-simple-server/internal/conf"
+	"github.com/mivtdole/rtsp-simple-server/internal/externalcmd"
+	"github.com/mivtdole/rtsp-simple-server/internal/logger"
 )
 
 type rtmpServerAPIConnsListItem struct {

@@ -9,10 +9,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/aler9/gortsplib"
-	"github.com/aler9/gortsplib/pkg/h264"
 	"github.com/asticode/go-astits"
 	"github.com/gin-gonic/gin"
+	"github.com/mivtdole/gortsplib"
+	"github.com/mivtdole/gortsplib/pkg/h264"
 	"github.com/pion/rtp/v2"
 	"github.com/stretchr/testify/require"
 )

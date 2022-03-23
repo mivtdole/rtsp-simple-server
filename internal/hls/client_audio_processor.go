@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/aler9/gortsplib"
-	"github.com/aler9/gortsplib/pkg/aac"
+	"github.com/mivtdole/gortsplib"
+	"github.com/mivtdole/gortsplib/pkg/aac"
 )
 
 type clientAudioProcessorData struct {

@@ -6,7 +6,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/aler9/gortsplib"
+	"github.com/mivtdole/gortsplib"
 )
 
 // Protocol is a RTSP transport.

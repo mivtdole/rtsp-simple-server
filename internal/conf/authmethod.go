@@ -6,7 +6,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/aler9/gortsplib/pkg/headers"
+	"github.com/mivtdole/gortsplib/pkg/headers"
 )
 
 // AuthMethods is the authMethods parameter.

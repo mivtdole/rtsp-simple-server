@@ -3,7 +3,7 @@ package core
 import (
 	"sync"
 
-	"github.com/aler9/gortsplib"
+	"github.com/mivtdole/gortsplib"
 	"github.com/pion/rtcp"
 	"github.com/pion/rtp/v2"
 )
